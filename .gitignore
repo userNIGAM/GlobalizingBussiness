@@ -1,0 +1,80 @@
+# ===============================
+# Node.js / JavaScript projects
+# Covers both backend/ and frontend/
+# ===============================
+
+# Dependency directories
+backend/node_modules/
+frontend/node_modules/
+
+# Debug & logs
+backend/npm-debug.log*
+frontend/npm-debug.log*
+backend/yarn-debug.log*
+frontend/yarn-debug.log*
+backend/yarn-error.log*
+frontend/yarn-error.log*
+backend/pnpm-debug.log*
+frontend/pnpm-debug.log*
+backend/.pnpm-debug.log*
+frontend/.pnpm-debug.log*
+
+# Runtime data
+backend/pids
+frontend/pids
+backend/*.pid
+frontend/*.pid
+backend/*.seed
+frontend/*.seed
+backend/*.pid.lock
+frontend/*.pid.lock
+
+# Coverage & testing
+backend/coverage/
+frontend/coverage/
+backend/.nyc_output/
+frontend/.nyc_output/
+backend/.karma/
+frontend/.karma/
+backend/.eslintcache
+frontend/.eslintcache
+
+# Build outputs
+backend/dist/
+frontend/dist/
+backend/build/
+frontend/build/
+backend/.next/
+frontend/.next/
+backend/out/
+frontend/out/
+
+# Optional caches
+backend/.cache/
+frontend/.cache/
+backend/.parcel-cache/
+frontend/.parcel-cache/
+
+# Env files
+backend/.env
+frontend/.env
+backend/.env.*.local
+frontend/.env.*.local
+
+# Editor/OS
+backend/.DS_Store
+frontend/.DS_Store
+backend/Thumbs.db
+frontend/Thumbs.db
+backend/.idea/
+frontend/.idea/
+backend/.vscode/
+frontend/.vscode/
+
+# Misc
+backend/*.tgz
+frontend/*.tgz
+backend/.npm/
+frontend/.npm/
+backend/.eslintcache
+frontend/.eslintcache
