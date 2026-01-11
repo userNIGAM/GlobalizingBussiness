@@ -136,7 +136,7 @@ export default function CreatePostModal({ isOpen, onClose, onSubmit }) {
             <button
               onClick={handleSubmit}
               disabled={!content.trim()}
-              className="mt-6 w-full py-4 bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+              className="mt-6 w-full py-4 bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
             >
               Publish Post
             </button>
