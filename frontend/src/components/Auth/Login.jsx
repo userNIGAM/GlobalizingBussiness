@@ -96,7 +96,7 @@ const Login = () => {
     
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      navigate('/dashboard');
+      navigate('/home');
     } catch (error) {
       setErrors({ general: error.message || 'Login failed. Please try again.' });
     } finally {
