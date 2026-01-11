@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
-      <div className="text-center">
+      {/* <div className="text-center">
         <h1 className="text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
           Professional Profile Manager
         </h1>
@@ -38,7 +38,7 @@ export default function App() {
         >
           Open Settings
         </button>
-      </div>
+      </div> */}
 
       <ProfileModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </div>
@@ -49,7 +49,7 @@ export default function App() {
 function ProfileModal({ open, onOpenChange }) {
   const [activeTab, setActiveTab] = useState("profile");
   const [profile, setProfile] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     location: "",
