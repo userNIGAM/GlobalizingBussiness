@@ -130,7 +130,7 @@ const Home = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Your network</p>
-                  <p className="text-2xl font-bold text-purple-700">1,248 professionals</p>
+                  <p className="text-2xl font-bold text-blue-700">1,248 professionals</p>
                 </div>
               </div>
             </div>

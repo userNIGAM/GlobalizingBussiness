@@ -9,12 +9,12 @@ export default function Header({ onCreatePost }) {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-xl">C</span>
+            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-blue-600 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl">HC</span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                ConnectHub
+              <h1 className="text-2xl font-bold bg-linear-to-r from-blue-600 to-blue-600 bg-clip-text text-transparent">
+                HireConnect
               </h1>
               <p className="text-xs text-gray-500">Professional Network</p>
             </div>
@@ -36,7 +36,7 @@ export default function Header({ onCreatePost }) {
           <div className="flex items-center space-x-4">
             <button
               onClick={onCreatePost}
-              className="flex items-center space-x-2 px-5 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
+              className="flex items-center space-x-2 px-5 py-3 bg-linear-to-r from-blue-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
             >
               <PlusCircle size={20} />
               <span className="font-semibold">Create</span>

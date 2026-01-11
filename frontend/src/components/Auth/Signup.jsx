@@ -1,10 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './Auth.css';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  User,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  CheckCircle,
+  AlertCircle,
+  Chrome,
+  Github,
+  Check
+} from 'lucide-react';
+import { registerUser } from "../../services/api.js"
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -12,7 +27,28 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const containerVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      x: 20,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,19 +56,22 @@ const Signup = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
     }
     
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Please enter a valid email';
     }
     
     if (!formData.password) {
@@ -40,7 +79,7 @@ const Signup = () => {
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number';
+      newErrors.password = 'Include uppercase, lowercase, and number';
     }
     
     if (formData.password !== formData.confirmPassword) {
@@ -53,6 +92,13 @@ const Signup = () => {
     
     return newErrors;
   };
+
+  const passwordRequirements = [
+    { label: 'At least 8 characters', met: formData.password.length >= 8 },
+    { label: 'One lowercase letter', met: /[a-z]/.test(formData.password) },
+    { label: 'One uppercase letter', met: /[A-Z]/.test(formData.password) },
+    { label: 'One number', met: /\d/.test(formData.password) },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,172 +113,300 @@ const Signup = () => {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Mock successful signup
-      console.log('Signup data:', {
-        ...formData,
-        password: '***', // Don't log actual password
-        confirmPassword: '***'
+       const res = await registerUser(formData);
+      console.log("Data sent")
+
+    if (res.data.success) {
+      console.log("Incomming Otp")
+      navigate("/otp", {
+        state: { email: formData.email },
       });
-      // In real app: await authService.signup(formData);
-      
-      // Navigate to OTP verification or login
-      navigate('/otp', { state: { email: formData.email } });
-    } catch (error) {
-      setErrors({ general: error.message || 'Signup failed. Please try again.' });
-    } finally {
-      setIsLoading(false);
     }
+  } catch (error) {
+    setErrors({
+      general:
+        error.response?.data?.message ||
+        "Signup failed. Please try again.",
+    });
+  } finally {
+    setIsLoading(false);
+  }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <h2>Create Account</h2>
-          <p>Sign up to get started with our service</p>
-        </div>
-
-        {errors.general && (
-          <div className="alert alert-error">
-            {errors.general}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className={errors.fullName ? 'input-error' : ''}
-              placeholder="Enter your full name"
-            />
-            {errors.fullName && <span className="error-message">{errors.fullName}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? 'input-error' : ''}
-              placeholder="Enter your email"
-            />
-            {errors.email && <span className="error-message">{errors.email}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={errors.password ? 'input-error' : ''}
-              placeholder="Create a password"
-            />
-            {errors.password && <span className="error-message">{errors.password}</span>}
-            <div className="password-hints">
-              <span className={formData.password.length >= 8 ? 'valid' : ''}>
-                • At least 8 characters
-              </span>
-              <span className={/(?=.*[a-z])/.test(formData.password) ? 'valid' : ''}>
-                • One lowercase letter
-              </span>
-              <span className={/(?=.*[A-Z])/.test(formData.password) ? 'valid' : ''}>
-                • One uppercase letter
-              </span>
-              <span className={/(?=.*\d)/.test(formData.password) ? 'valid' : ''}>
-                • One number
-              </span>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="min-h-screen flex items-center justify-center p-4"
+    >
+      <div className="w-full max-w-md">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-center mb-8"
+        >
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-linear-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+              <User className="w-8 h-8 text-white" />
             </div>
           </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Create Account
+          </h1>
+          <p className="text-gray-600">
+            Join us and start your journey
+          </p>
+        </motion.div>
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={errors.confirmPassword ? 'input-error' : ''}
-              placeholder="Confirm your password"
-            />
-            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-          </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-2xl shadow-xl p-8"
+        >
+          <AnimatePresence>
+            {errors.general && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl"
+              >
+                <div className="flex items-center space-x-3">
+                  <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
+                  <p className="text-red-700 text-sm">{errors.general}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <div className="form-group checkbox-group">
-            <label className="checkbox-label">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.name ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="John Doe"
+                />
+              </div>
+              {errors.name && (
+                <p className="text-red-500 text-sm flex items-center space-x-1">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>{errors.name}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="you@example.com"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm flex items-center space-x-1">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>{errors.email}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-10 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+              
+              <div className="mt-3 space-y-2">
+                {passwordRequirements.map((req, index) => (
+                  <motion.div
+                    key={req.label}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`flex items-center space-x-2 text-sm ${
+                      req.met ? 'text-green-600' : 'text-gray-500'
+                    }`}
+                  >
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                      req.met ? 'bg-green-100' : 'bg-gray-100'
+                    }`}>
+                      {req.met ? (
+                        <Check className="w-3 h-3" />
+                      ) : (
+                        <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                      )}
+                    </div>
+                    <span>{req.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-10 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm flex items-center space-x-1">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>{errors.confirmPassword}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-start">
               <input
                 type="checkbox"
+                id="agreeTerms"
                 name="agreeTerms"
                 checked={formData.agreeTerms}
                 onChange={handleChange}
+                className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500 mt-0.5"
               />
-              <span>
+              <label htmlFor="agreeTerms" className="ml-2 text-sm text-gray-700">
                 I agree to the{' '}
-                <Link to="/terms" className="terms-link">
+                <Link to="/terms" className="text-indigo-600 hover:text-indigo-800">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="/privacy" className="terms-link">
+                <Link to="/privacy" className="text-indigo-600 hover:text-indigo-800">
                   Privacy Policy
                 </Link>
-              </span>
-            </label>
-            {errors.agreeTerms && <span className="error-message">{errors.agreeTerms}</span>}
+              </label>
+            </div>
+            {errors.agreeTerms && (
+              <p className="text-red-500 text-sm flex items-center space-x-1">
+                <AlertCircle className="w-4 h-4" />
+                <span>{errors.agreeTerms}</span>
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-linear-to-r from-green-600 to-emerald-600 text-white py-3 px-4 rounded-xl font-medium hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Creating account...</span>
+                </>
+              ) : (
+                <>
+                  <span>Create Account</span>
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 pt-8 border-t border-gray-200">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                <Chrome className="w-5 h-5" />
+                <span className="ml-2">Google</span>
+              </button>
+              <button className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                <Github className="w-5 h-5" />
+                <span className="ml-2">GitHub</span>
+              </button>
+            </div>
           </div>
 
-          <button 
-            type="submit" 
-            className="btn btn-primary"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner"></span>
-                Creating Account...
-              </>
-            ) : 'Create Account'}
-          </button>
-        </form>
-
-        <div className="divider">
-          <span>Or sign up with</span>
-        </div>
-
-        <div className="social-login">
-          <button type="button" className="btn btn-social btn-google">
-            <i className="fab fa-google"></i>
-            Google
-          </button>
-          <button type="button" className="btn btn-social btn-github">
-            <i className="fab fa-github"></i>
-            GitHub
-          </button>
-        </div>
-
-        <div className="auth-footer">
-          <p>
-            Already have an account?{' '}
-            <Link to="/login" className="auth-link">
-              Sign in
-            </Link>
-          </p>
-        </div>
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-medium text-indigo-600 hover:text-indigo-800 transition-colors duration-200"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -46,6 +46,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import multer from "multer";
 import authRoutes from "./routes/authRoutes.js";
 import { ConnectDB } from "./config/db.js";
 import kycRoutes from "./routes/kyc.js";

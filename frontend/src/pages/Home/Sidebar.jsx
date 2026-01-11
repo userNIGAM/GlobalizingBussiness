@@ -32,14 +32,14 @@ export default function Sidebar() {
   return (
     <div className="sticky top-8">
       {/* Navigation */}
-      <div className="bg-gradient-to-b from-white to-gray-50 rounded-2xl shadow-lg border border-gray-100 p-6 mb-6">
+      <div className="bg-linear-to-b from-white to-gray-50 rounded-2xl shadow-lg border border-gray-100 p-6 mb-6">
         <div className="space-y-2">
           {menuItems.map((item) => (
             <button
               key={item.label}
               className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${
                 item.active 
-                  ? 'bg-gradient-to-r from-purple-50 to-blue-50 text-purple-700 border border-purple-100' 
+                  ? 'bg-linear-to-r from-purple-50 to-blue-50 text-blue-700 border border-purple-100' 
                   : 'hover:bg-gray-100 text-gray-700'
               }`}
             >
@@ -48,7 +48,7 @@ export default function Sidebar() {
                 <span className="font-medium">{item.label}</span>
               </div>
               {item.count && (
-                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                   {item.count}
                 </span>
               )}
@@ -58,7 +58,7 @@ export default function Sidebar() {
       </div>
 
       {/* Trending Topics */}
-      <div className="bg-gradient-to-b from-white to-gray-50 rounded-2xl shadow-lg border border-gray-100 p-6">
+      <div className="bg-linear-to-b from-white to-gray-50 rounded-2xl shadow-lg border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900 flex items-center gap-2">
             <TrendingUp size={20} className="text-purple-600" />
@@ -87,7 +87,7 @@ export default function Sidebar() {
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-6 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+      <div className="mt-6 bg-linear-to-r from-purple-600 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
         <Zap size={24} className="mb-3" />
         <h4 className="font-bold text-lg mb-2">Boost Your Profile</h4>
         <p className="text-sm opacity-90 mb-4">Get 2x more visibility for 7 days</p>

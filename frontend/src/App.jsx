@@ -1,61 +1,63 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import Navigation from "./components/Navigation";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Networking from "./components/Networking/Networking";
-import Marketplace from "./components/Marketplace/Marketplace";
-import Collaboration from "./components/Collaboration/Collaboration";
-import Analytics from "./components/Analytics/Analytics";
-// import Login from "./components/Auth/LoginForm";
-import CreateProfile from "./components/Profile/CreateProfile";
-import Notifications from "./components/Notification/Notification";
-import CreatePost from "./pages/CreatePost";
+import { AuthContext } from "./context/AuthContext";
 import "./App.css";
 import Home from "./pages/Home/Home";
+import Login from "./components/Auth/Login";
+import Signup from "./components/Auth/Signup";
+import Otp from "./components/Auth/Otp";
+import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
 
 function App() {
-  const [userRole, setUserRole] = useState(null); // "recruiter" / "jobseeker" after login
-  const [searchQuery, setSearchQuery] = useState("");
+  const { user, loading } = useContext(AuthContext);
 
-  // Show login page if not logged in
-  // if (!userRole) {
-  //   return <Login setUserRole={setUserRole} />;
-  // }
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
       {/* All content is now route-based */}
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route
             path="/home"
-            element={<Home userRole={userRole} />}
+            element={<Home/>}
           />
           <Route
-            path="/networking"
-            element={<Networking searchQuery={searchQuery} />}
+            path="/login"
+            element={user ? <Navigate to="/home" replace /> : <Login />}
           />
           <Route
-            path="/marketplace"
-            element={<Marketplace searchQuery={searchQuery} />}
+            path="/signup"
+            element={user ? <Navigate to="/home" replace /> : <Signup />}
           />
-          <Route path="/collaboration" element={<Collaboration />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/notifications" element={<Notifications />} />
           <Route
-            path="/create-profile"
-            element={<CreateProfile setUserRole={setUserRole} />}
+            path="/otp"
+            element={<Otp />}
           />
-          {/* Add a catch-all route */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
+          <Route
+            path="/reset-password"
+            element={<ResetPassword />}
+          />
         </Routes>
       </Router>
     </div>

@@ -326,7 +326,7 @@ export const resetPassword = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
   try {
     // This middleware should be protected by auth middleware that verifies JWT
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user._id).select("-password");
     if (!user) {
       return res
         .status(404)
