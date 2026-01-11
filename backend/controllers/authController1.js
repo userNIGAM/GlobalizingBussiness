@@ -17,9 +17,9 @@ const signJWT = (
 const setAuthCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // only true in prod
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 Days
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -155,33 +155,29 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+        .json({ success: false, message: "Email and password required" });
     }
-    console.log("Login attempt:", email, password);
+
     const user = await User.findOne({ email }).select("+password");
-    console.log("User found:", !!user);
     if (!user)
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
-    // Use the comparePassword method from the User model
+
     const isMatch = await user.comparePassword(password);
-    console.log("Password match:", isMatch);
     if (!isMatch)
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
+
     // Create JWT token regardless of verification status
-    const token = signJWT({ id: user._id, role: user.role });
+    const token = signJWT({ id: user._id });
     setAuthCookie(res, token);
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
-    // const { password: _p, ...userData } = user.toObject();
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      user: userWithoutPassword,
-    });
+
+    const { password: _p, ...userData } = user.toObject();
+    return res
+      .status(200)
+      .json({ success: true, message: "Login successful", user: userData });
   } catch (err) {
     console.error("Login Error:", err);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -343,15 +339,10 @@ export const getCurrentUser = async (req, res) => {
 /* ------------------- LOGOUT ------------------- */
 export const logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    });
-    return res.status(200).json({
-      success: true,
-      message: "Logged out successfully",
-    });
+    res.clearCookie("token");
+    return res
+      .status(200)
+      .json({ success: true, message: "Logged out successfully" });
   } catch (err) {
     console.error("Logout Error:", err);
     return res.status(500).json({ success: false, message: "Server error" });

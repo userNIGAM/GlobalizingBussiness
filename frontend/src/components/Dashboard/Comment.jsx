@@ -4,7 +4,7 @@ const Comment = () => {
   return (
     <section
       id="testimonials"
-      className="py-20 bg-gradient-to-b from-blue-50 via-white to-blue-50 text-center"
+      className="py-20 bg-linear-to-b from-blue-50 via-white to-blue-50 text-center"
     >
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Heading */}

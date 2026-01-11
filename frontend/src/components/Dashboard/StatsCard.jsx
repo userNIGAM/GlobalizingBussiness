@@ -11,7 +11,7 @@ const StatsCard = ({ title, value, change, icon: Icon }) => {
 
   return (
     <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-lg flex items-center space-x-4">
-      <div className="p-3 bg-gradient-to-tr from-blue-500 to-green-500 rounded-xl text-white">
+      <div className="p-3 bg-linear-to-tr from-blue-500 to-green-500 rounded-xl text-white">
         <Icon size={28} />
       </div>
       <div>

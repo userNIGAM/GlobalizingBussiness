@@ -4,7 +4,7 @@ const Features = () => {
   return (
     <section
       id="features"
-      className="py-20 bg-gradient-to-b from-white via-blue-50 to-white text-center"
+      className="py-20 bg-linear-to-b from-white via-blue-50 to-white text-center"
     >
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Heading */}

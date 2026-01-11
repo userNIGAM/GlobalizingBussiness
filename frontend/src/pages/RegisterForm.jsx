@@ -14,7 +14,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-950 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-950 p-6">
       <div className="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-8 w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
           GSEM Registration
