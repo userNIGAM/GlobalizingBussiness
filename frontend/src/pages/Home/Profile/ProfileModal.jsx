@@ -19,34 +19,8 @@ import {
   Bell,
 } from "lucide-react";
 
-// Main App Component
-export default function App() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
-      {/* <div className="text-center">
-        <h1 className="text-4xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-          Professional Profile Manager
-        </h1>
-        <p className="text-gray-600 mb-8">
-          Complete settings and profile management system
-        </p>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-8 py-4 text-white font-medium bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 active:scale-95"
-        >
-          Open Settings
-        </button>
-      </div> */}
-
-      <ProfileModal open={isModalOpen} onOpenChange={setIsModalOpen} />
-    </div>
-  );
-}
-
 // Profile Modal Component
-function ProfileModal({ open, onOpenChange }) {
+export default function ProfileModal({ open, onOpenChange }) {
   const [activeTab, setActiveTab] = useState("profile");
   const [profile, setProfile] = useState({
     name: "",
@@ -86,6 +60,8 @@ function ProfileModal({ open, onOpenChange }) {
     pushNotif: false,
     weeklyDigest: true,
   });
+
+  if (!open) return null;
 
   const handleChange = (field, value) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
@@ -532,13 +508,27 @@ function ProfileModal({ open, onOpenChange }) {
                         </p>
                       </div>
                       <button
+                        type="button"
                         onClick={() => onOpenChange(false)}
-                        className="p-2 hover:bg-gray-100/50 rounded-xl transition-all duration-200 group"
+                        aria-label="Close profile modal"
+                        className="
+    group
+    inline-flex
+    items-center
+    justify-center
+    h-10
+    w-10
+    rounded-xl
+    border
+    hover:bg-gray-100/50
+    transition-all
+    cursor-pointer
+  "
                       >
-                        <X className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-colors" />
+                        <X className="h-5 w-5 text-gray-500 group-hover:text-gray-700 transition-colors" />
                       </button>
                     </div>
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 via-green-500 to-pink-500" />
                   </div>
 
                   {/* Content */}
@@ -578,7 +568,7 @@ function ProfileModal({ open, onOpenChange }) {
                           });
                           onOpenChange(false);
                         }}
-                        className="px-6 py-3 text-sm font-medium text-white bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2 active:scale-95"
+                        className="px-6 py-3 text-sm font-medium text-white bg-linear-to-b from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 flex items-center gap-2 active:scale-95"
                       >
                         <Save className="w-4 h-4" />
                         Save Changes

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Search, PlusCircle, Bell, HelpCircle } from "lucide-react";
-import Avatar from "./Avatar";
+import { Search, PlusCircle, Bell, HelpCircle, User } from "lucide-react";
 import ProfileModal from "./Profile/ProfileModal";
 
 export default function Header({ onCreatePost }) {
@@ -8,8 +7,6 @@ export default function Header({ onCreatePost }) {
 
   const handleClick = () => {
     setIsProfileOpen(true);
-    // console.log("Clicked")
-    // alert("Profile modal opened");
   }
   return (
     <>
@@ -63,23 +60,19 @@ export default function Header({ onCreatePost }) {
                 <HelpCircle size={24} />
               </button>
 
-            <div>
-                <button onClick={handleClick}>
-                  <Avatar
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=You"
-                size="md"
-                className="cursor-pointer hover:ring-2 hover:ring-blue-500"
-                // onClick={() => setIsProfileOpen(true)}
-                // onClick={handleClick}
-              />
-                </button>
-            </div>
+              <button
+                onClick={handleClick}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-700 hover:text-blue-600"
+                title="Open Profile"
+              >
+                <User size={24} />
+              </button>
             </div>
           </div>
         </div>
       </header>
       {/* Profile Modal */}
-      <ProfileModal open={isProfileOpen} onOpenChange={setIsProfileOpen} />
+      <ProfileModal open={isProfileOpen} onOpenChange={setIsProfileOpen}/>
     </>
   );
 }
