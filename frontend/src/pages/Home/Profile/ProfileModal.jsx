@@ -511,21 +511,8 @@ export default function ProfileModal({ open, onOpenChange }) {
                         type="button"
                         onClick={() => onOpenChange(false)}
                         aria-label="Close profile modal"
-                        className="
-    group
-    inline-flex
-    items-center
-    justify-center
-    h-10
-    w-10
-    rounded-xl
-    border
-    hover:bg-gray-100/50
-    transition-all
-    cursor-pointer
-  "
-                      >
-                        <X className="h-5 w-5 text-gray-500 group-hover:text-gray-700 transition-colors" />
+                        className="group inline-flex items-center justify-center h-10 w-10 rounded-xl hover:bg-gray-100/50 transition-all cursor-pointer" > 
+                        <X className="h-5 w-5 relative top-3 -left-3 text-gray-500 group-hover:text-gray-700 transition-colors" />
                       </button>
                     </div>
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 via-green-500 to-pink-500" />
