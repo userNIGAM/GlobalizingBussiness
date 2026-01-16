@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { User, Settings, Shield, Eye, Database, Bell } from "lucide-react";
 
 const tabs = [
@@ -11,8 +13,8 @@ const tabs = [
 
 export default function SidebarNav({ activeTab, onChange }) {
   return (
-    <aside className="w-64 border-r bg-gradient-to-b from-gray-50/50 to-white/50 p-6">
-      <h2 className="text-xl font-bold">Settings</h2>
+    <aside className="w-64 border-r bg-linear-to-b from-gray-50/50 to-white/50 p-6">
+      <h2 className="text-xl font-bold text-gray-900">Settings</h2>
       <p className="text-xs text-gray-500 mb-8">Manage your account</p>
 
       <nav className="space-y-1">
