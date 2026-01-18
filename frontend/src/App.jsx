@@ -14,6 +14,14 @@ import Otp from "./components/Auth/Otp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 
+// Protected Route Component
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
 function App() {
   const { user, loading } = useContext(AuthContext);
 
@@ -33,10 +41,14 @@ function App() {
       {/* All content is now route-based */}
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/" element={<Navigate to={user ? "/home" : "/login"} replace />} />
           <Route
             path="/home"
-            element={<Home/>}
+            element={
+              <ProtectedRoute user={user}>
+                <Home />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/login"
