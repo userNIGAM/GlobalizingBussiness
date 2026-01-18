@@ -28,6 +28,7 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
+      console.log("Missing fields");
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
@@ -68,10 +69,6 @@ export const register = async (req, res) => {
         </div>
       `,
     });
-
-    // Create JWT token for immediate login after verification
-    const token = signJWT({ id: user._id });
-    setAuthCookie(res, token);
 
     const { password: _p, ...userData } = user.toObject();
     return res.status(201).json({
@@ -159,14 +156,12 @@ export const login = async (req, res) => {
     }
     console.log("Login attempt:", email, password);
     const user = await User.findOne({ email }).select("+password");
-    console.log("User found:", !!user);
     if (!user)
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
     // Use the comparePassword method from the User model
     const isMatch = await user.comparePassword(password);
-    console.log("Password match:", isMatch);
     if (!isMatch)
       return res
         .status(400)
@@ -174,9 +169,7 @@ export const login = async (req, res) => {
     // Create JWT token regardless of verification status
     const token = signJWT({ id: user._id, role: user.role });
     setAuthCookie(res, token);
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
-    // const { password: _p, ...userData } = user.toObject();
+    const { password: _p, ...userWithoutPassword } = user.toObject();
     return res.status(200).json({
       success: true,
       message: "Login successful",
