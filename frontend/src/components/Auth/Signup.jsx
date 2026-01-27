@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -15,7 +15,7 @@ import {
   Github,
   Check
 } from 'lucide-react';
-import { registerUser } from "../../services/api.js"
+import { AuthContext } from '../../context/AuthContext';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -30,6 +30,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+  const { register } = useContext(AuthContext);
 
   const containerVariants = {
     hidden: { opacity: 0, x: -20 },
@@ -113,24 +114,26 @@ const Signup = () => {
     setIsLoading(true);
     
     try {
-       const res = await registerUser(formData);
-      console.log("Data sent")
+      const result = await register(formData.name, formData.email, formData.password);
 
-    if (res.data.success) {
-      console.log("Incomming Otp")
-      navigate("/otp", {
-        state: { email: formData.email },
+      if (result.success) {
+        navigate("/otp", {
+          state: { email: formData.email },
+        });
+      } else {
+        setErrors({
+          general: result.message || "Signup failed. Please try again.",
+        });
+      }
+    } catch (error) {
+      setErrors({
+        general:
+          error.message ||
+          "Signup failed. Please try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    setErrors({
-      general:
-        error.response?.data?.message ||
-        "Signup failed. Please try again.",
-    });
-  } finally {
-    setIsLoading(false);
-  }
   };
 
   return (

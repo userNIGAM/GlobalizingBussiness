@@ -48,6 +48,7 @@ function App() {
               <ProtectedRoute user={user}>
                 <Home />
               </ProtectedRoute>
+              // <Home />
             }
           />
           <Route

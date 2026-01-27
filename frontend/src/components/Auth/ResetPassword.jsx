@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Eye, EyeOff, AlertCircle, ArrowLeft, CheckCircle, Shield } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
 const ResetPassword = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const ResetPassword = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { resetPassword: resetPasswordFunc } = useContext(AuthContext);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -118,12 +120,17 @@ const ResetPassword = () => {
     setErrors({});
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      navigate('/login', { 
-        state: { 
-          message: 'Password reset successfully! Please login with your new password.' 
-        } 
-      });
+      const result = await resetPasswordFunc(email, otp, formData.password);
+      
+      if (result.success) {
+        navigate('/login', { 
+          state: { 
+            message: 'Password reset successfully! Please login with your new password.' 
+          } 
+        });
+      } else {
+        setErrors({ general: result.message || 'Password reset failed. Please try again.' });
+      }
     } catch (error) {
       setErrors({ general: error.message || 'Password reset failed. Please try again.' });
     } finally {

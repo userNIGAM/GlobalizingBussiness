@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Key, AlertCircle, ArrowLeft, RotateCcw, CheckCircle } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
 const Otp = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -14,6 +15,7 @@ const Otp = () => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { verifyEmail, resendVerification } = useContext(AuthContext);
 
   const containerVariants = {
     hidden: { opacity: 0, rotateX: -10 },
@@ -107,18 +109,23 @@ const Otp = () => {
     setError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await verifyEmail(email, otpString);
       
-      if (location.state?.from === 'forgot-password') {
-        navigate('/reset-password', { state: { email, otp: otpString } });
+      if (result.success) {
+        if (location.state?.from === 'forgot-password') {
+          navigate('/reset-password', { state: { email, otp: otpString } });
+        } else {
+          navigate('/login', { 
+            state: { message: 'Account verified successfully!' } 
+          });
+        }
       } else {
-        navigate('/login', { 
-          state: { message: 'Account verified successfully!' } 
-        });
+        setError(result.message || 'Invalid OTP. Please try again.');
+        setOtp(['', '', '', '', '', '']);
+        inputRefs.current[0]?.focus();
       }
     } catch (error) {
-      console.log(error)
-      setError('Invalid OTP. Please try again.');
+      setError(error.message || 'Invalid OTP. Please try again.');
       setOtp(['', '', '', '', '', '']);
       inputRefs.current[0]?.focus();
     } finally {
@@ -134,21 +141,25 @@ const Otp = () => {
     inputRefs.current[0]?.focus();
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await resendVerification(email);
       
-      const interval = setInterval(() => {
-        setTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            setIsResendDisabled(false);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+      if (result.success) {
+        const interval = setInterval(() => {
+          setTimer((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              setIsResendDisabled(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      } else {
+        setError(result.message || 'Failed to resend OTP. Please try again.');
+        setIsResendDisabled(false);
+      }
     } catch (error) {
-      console.log(error)
-      setError('Failed to resend OTP. Please try again.');
+      setError(error.message || 'Failed to resend OTP. Please try again.');
       setIsResendDisabled(false);
     }
   };

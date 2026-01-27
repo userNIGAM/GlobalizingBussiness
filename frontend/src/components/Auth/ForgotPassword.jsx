@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const navigate = useNavigate();
+  const { forgotPassword } = useContext(AuthContext);
 
   const containerVariants = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -53,8 +55,15 @@ const ForgotPassword = () => {
     setError('');
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setIsEmailSent(true);
+      const result = await forgotPassword(email);
+      if (result.success) {
+        setIsEmailSent(true);
+        navigate('/otp', {
+          state: { email, from: 'forgot-password' }
+        });
+      } else {
+        setError(result.message || 'Failed to send reset email. Please try again.');
+      }
     } catch (error) {
       setError(error.message || 'Failed to send reset email. Please try again.');
     } finally {
@@ -62,8 +71,22 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleResendEmail = () => {
-    console.log('Resending email to:', email);
+  const handleResendEmail = async () => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const result = await forgotPassword(email);
+      if (result.success) {
+        setError('');
+      } else {
+        setError(result.message || 'Failed to resend email.');
+      }
+    } catch (error) {
+      setError(error.message || 'Failed to resend email.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

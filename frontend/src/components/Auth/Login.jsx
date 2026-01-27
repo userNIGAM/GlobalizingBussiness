@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -13,6 +13,7 @@ import {
   Chrome,
   AlertCircle
 } from 'lucide-react';
+import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -95,8 +97,13 @@ const Login = () => {
     setIsLoading(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      navigate('/home');
+      const result = await login(formData.email, formData.password);
+      
+      if (result.success) {
+        navigate('/home');
+      } else {
+        setErrors({ general: result.message || 'Login failed. Please try again.' });
+      }
     } catch (error) {
       setErrors({ general: error.message || 'Login failed. Please try again.' });
     } finally {
