@@ -39,8 +39,8 @@ const RightIcons = ({
         onClick={() => setActiveTab("create")}
         className={`hidden md:flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 font-medium group ${
           isDark
-            ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white shadow-lg"
-            : "bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-md"
+            ? "bg-linear-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white shadow-lg"
+            : "bg-linear-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-md"
         }`}
       >
         <Plus className="h-4 w-4 group-hover:rotate-90 transition-transform duration-300" />

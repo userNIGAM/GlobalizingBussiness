@@ -51,8 +51,8 @@ const DesktopMenu = ({ menuItems, activeTab, setActiveTab, isDark }) => {
             <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-8 rounded-t-full transition-all duration-300 ${
               isActive 
                 ? isDark 
-                  ? "bg-gradient-to-r from-blue-400 to-cyan-400" 
-                  : "bg-gradient-to-r from-blue-500 to-cyan-500"
+                  ? "bg-linear-to-r from-blue-400 to-cyan-400" 
+                  : "bg-linear-to-r from-blue-500 to-cyan-500"
                 : "opacity-0 group-hover:opacity-100 group-hover:bg-gray-400"
             }`} />
             
@@ -68,8 +68,8 @@ const DesktopMenu = ({ menuItems, activeTab, setActiveTab, isDark }) => {
             {/* Hover Effect */}
             <div className={`absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
               isDark 
-                ? "bg-gradient-to-br from-gray-800/30 to-transparent" 
-                : "bg-gradient-to-br from-gray-100/50 to-transparent"
+                ? "bg-linear-to-br from-gray-800/30 to-transparent" 
+                : "bg-linear-to-br from-gray-100/50 to-transparent"
             }`} />
           </button>
         );

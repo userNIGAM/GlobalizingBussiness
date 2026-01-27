@@ -49,8 +49,8 @@ const MobileMenu = ({
       } transform transition-transform duration-300`}>
         <div className="p-6 overflow-y-auto h-full">
           {/* User Profile Section */}
-          <div className="flex items-center space-x-3 mb-8 p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+          <div className="flex items-center space-x-3 mb-8 p-4 rounded-xl bg-linear-to-r from-blue-500/10 to-cyan-500/10">
+            <div className="h-12 w-12 rounded-full bg-linear-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
               JD
             </div>
             <div>

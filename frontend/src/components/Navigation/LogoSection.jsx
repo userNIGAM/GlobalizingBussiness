@@ -20,7 +20,7 @@ const LogoSection = ({ isDark, setActiveTab }) => {
           }`} />
         </div>
         <div className="ml-3 flex flex-col">
-          <span className={`text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r ${
+          <span className={`text-xl md:text-2xl font-bold tracking-tight bg-linear-to-r ${
             isDark 
               ? "from-blue-400 to-cyan-300" 
               : "from-blue-600 to-cyan-500"
