@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { ThemeContext } from '../../context/ThemeContext';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Post from './Post';
 import CreatePostModal from './CreatePostModal';
 
 const Home = () => {
+ const { isDark } = useContext(ThemeContext);
  const [posts, setPosts] = useState([
     {
       id: 1,
@@ -109,7 +111,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-linear-to-b from-gray-50 to-white'} transition-colors duration-200`}>
       <Header onCreatePost={() => setShowCreatePost(true)} />
       
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -122,18 +124,18 @@ const Home = () => {
           {/* Main Feed */}
           <div className="flex-1">
             {/* Welcome Card */}
-            <div className="bg-linear-to-r from-purple-50 to-blue-50 rounded-2xl p-8 mb-8 border border-purple-100">
-              <div className="flex items-center justify-between">
-                <div>
+            {/* <div className="bg-linear-to-r from-purple-50 to-blue-50 rounded-2xl p-8 mb-8 border border-purple-100"> */}
+              {/* <div className="flex items-center justify-between"> */}
+                {/* <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back! 👋</h2>
                   <p className="text-gray-600">Stay updated with what professionals in your network are talking about.</p>
-                </div>
-                <div className="text-right">
+                </div> */}
+                {/* <div className="text-right">
                   <p className="text-sm text-gray-500">Your network</p>
                   <p className="text-2xl font-bold text-blue-700">1,248 professionals</p>
-                </div>
-              </div>
-            </div>
+                </div> */}
+              {/* </div> */}
+            {/* </div> */}
 
             {/* Posts Feed */}
             <div className="space-y-6">

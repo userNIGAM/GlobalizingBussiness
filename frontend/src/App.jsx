@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
+import { ThemeContext } from "./context/ThemeContext";
 import "./App.css";
 import Home from "./pages/Home/Home";
 import Login from "./components/Auth/Login";
@@ -24,20 +25,21 @@ const ProtectedRoute = ({ user, children }) => {
 
 function App() {
   const { user, loading } = useContext(AuthContext);
+  const { isDark } = useContext(ThemeContext);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} transition-colors duration-200`}>
       {/* All content is now route-based */}
       <Router>
         <Routes>
