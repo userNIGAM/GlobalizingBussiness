@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Home, 
   Users, 
@@ -14,12 +15,14 @@ import {
 } from 'lucide-react';
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+
   const menuItems = [
-    { icon: <Home size={24} />, label: 'Feed', active: true },
-    { icon: <Users size={24} />, label: 'Network', count: 12 },
-    { icon: <Briefcase size={24} />, label: 'Jobs', count: 5 },
-    { icon: <MessageSquare size={24} />, label: 'Messages', count: 3 },
-    { icon: <Bell size={24} />, label: 'Notifications', count: 8 },
+    { icon: <Home size={24} />, label: 'Feed', path: '/feed', active: true },
+    { icon: <Users size={24} />, label: 'Network', path: '/network', count: 12 },
+    { icon: <Briefcase size={24} />, label: 'Jobs', path: '/jobs', count: 5 },
+    { icon: <MessageSquare size={24} />, label: 'Messages', path: '/messages', count: 3 },
+    { icon: <Bell size={24} />, label: 'Notifications', path: '/notifications', count: 8 },
   ];
 
   const topics = [
@@ -37,6 +40,7 @@ export default function Sidebar() {
           {menuItems.map((item) => (
             <button
               key={item.label}
+              onClick={() => navigate(item.path)}
               className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${
                 item.active 
                   ? 'bg-linear-to-r from-purple-50 to-blue-50 text-blue-700 border border-purple-100' 

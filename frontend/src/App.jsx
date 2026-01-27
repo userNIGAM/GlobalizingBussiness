@@ -14,6 +14,10 @@ import Signup from "./components/Auth/Signup";
 import Otp from "./components/Auth/Otp";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
+import JobList from "./pages/Home/Jobs/JobList"
+import JobDetail from "./pages/Home/Jobs/JobDetail";
+
+
 
 // Protected Route Component
 const ProtectedRoute = ({ user, children }) => {
@@ -73,6 +77,13 @@ function App() {
             path="/reset-password"
             element={<ResetPassword />}
           />
+
+          {/* sidebar navigation routes */}
+           <Route
+            path="/jobs"
+            element={<JobList />}
+          />
+            <Route path="/job/:id" element={<JobDetail />} />
         </Routes>
       </Router>
     </div>
