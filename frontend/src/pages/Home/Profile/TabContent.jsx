@@ -7,6 +7,7 @@ import SecurityTab from "./tabs/SecurityTab";
 import VisibilityTab from "./tabs/VisibilityTab";
 import PrivacyTab from "./tabs/PrivacyTab";
 import NotificationsTab from "./tabs/NotificationsTab";
+import Logout from "./tabs/Logout";
 
 const tabMap = {
   profile: ProfileTab,
@@ -15,6 +16,7 @@ const tabMap = {
   visibility: VisibilityTab,
   privacy: PrivacyTab,
   notifications: NotificationsTab,
+  Logout: Logout,
 };
 
 export default function TabContent(props) {

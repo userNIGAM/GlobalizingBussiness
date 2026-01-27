@@ -10,7 +10,7 @@ export default function ProfileModal({ open, onOpenChange }) {
   const [activeTab, setActiveTab] = useState("profile");
 
   const [profile, setProfile] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
     location: "",

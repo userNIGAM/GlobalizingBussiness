@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { User, Settings, Shield, Eye, Database, Bell } from "lucide-react";
+import { User, Settings, Shield, Eye, Database, Bell, LogOut } from "lucide-react";
 
 const tabs = [
   { id: "profile", label: "Profile", icon: User },
@@ -9,6 +9,7 @@ const tabs = [
   { id: "visibility", label: "Visibility", icon: Eye },
   { id: "privacy", label: "Data Privacy", icon: Database },
   { id: "notifications", label: "Notifications", icon: Bell },
+  { id: "Logout", label: "Logout", icon: LogOut },
 ];
 
 export default function SidebarNav({ activeTab, onChange }) {

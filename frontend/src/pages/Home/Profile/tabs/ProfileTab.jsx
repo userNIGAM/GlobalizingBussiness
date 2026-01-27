@@ -14,12 +14,16 @@ import {
   Upload,
   AlertCircle,
 } from "lucide-react";
+import { getCurrentUser } from "../../../../services/api.js";
 
 const ProfileSection = ({ profile, setProfile, isLoading = false }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [localProfile, setLocalProfile] = useState(profile);
   const [imagePreview, setImagePreview] = useState(profile?.imageUrl || "");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Animation variants
   const containerVariants = {
@@ -70,7 +74,7 @@ const ProfileSection = ({ profile, setProfile, isLoading = false }) => {
     let error = "";
 
     switch (field) {
-      case "fullName":
+      case "name":
         if (!value.trim()) error = "Full name is required";
         else if (value.length < 2) error = "Name must be at least 2 characters";
         break;
@@ -154,10 +158,18 @@ const ProfileSection = ({ profile, setProfile, isLoading = false }) => {
   };
 
   // Reset local profile when prop changes
-  useEffect(() => {
-    setLocalProfile(profile);
+    useEffect(()=>{
+      setLocalProfile(profile);
     setImagePreview(profile?.imageUrl || "");
-  }, [profile]);
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        setUser(res.data);
+      } catch (error) {
+        console.log("Error", error)
+      }
+  }
+    },[profile])
 
   if (isLoading) {
     return (
@@ -303,14 +315,14 @@ const ProfileSection = ({ profile, setProfile, isLoading = false }) => {
                     <div>
                       <input
                         type="text"
-                        value={localProfile.fullName || ""}
+                        value={localProfile.name || ""}
                         onChange={(e) =>
-                          handleChange("fullName", e.target.value)
+                          handleChange("name", e.target.value)
                         }
                         className="w-full text-2xl font-bold bg-transparent border-b-2 border-blue-200 focus:border-blue-500 focus:outline-none py-2"
                         placeholder="Enter your full name"
                       />
-                      {errors.fullName && (
+                      {errors.name && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}

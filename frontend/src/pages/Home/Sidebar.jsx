@@ -22,7 +22,7 @@ export default function Sidebar() {
     { icon: <Users size={24} />, label: 'Network', path: '/network', count: 12 },
     { icon: <Briefcase size={24} />, label: 'Jobs', path: '/jobs', count: 5 },
     { icon: <MessageSquare size={24} />, label: 'Messages', path: '/messages', count: 3 },
-    { icon: <Bell size={24} />, label: 'Notifications', path: '/notifications', count: 8 },
+    // { icon: <Bell size={24} />, label: 'Notifications', path: '/notifications', count: 8 },
   ];
 
   const topics = [

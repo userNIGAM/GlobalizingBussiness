@@ -55,10 +55,10 @@ export default function Header({ onCreatePost }) {
                 <Bell size={24} />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
-
+{/* 
               <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
                 <HelpCircle size={24} />
-              </button>
+              </button> */}
 
               <button
                 onClick={handleClick}
