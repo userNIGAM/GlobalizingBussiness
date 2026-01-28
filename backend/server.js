@@ -106,9 +106,17 @@ app.use("/api/auth", authRoutes);
 app.use("/api/kyc", kycRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/connections", connectionRoutes);
-// MongoDB connect
-ConnectDB();
 
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
+//Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Internal server error" });
+});
+
+
+// MongoDB connect
+ConnectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on PORT ${PORT}`);
+  });
 });

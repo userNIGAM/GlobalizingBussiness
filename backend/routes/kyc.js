@@ -5,6 +5,7 @@ import {
   getAllKYC,
   updateKYCStatus,
   getKYCDocument,
+  updateKYC,
   upload,
 } from "../controllers/kycController.js";
 import { protect } from "../middleware/auth.js";
@@ -25,6 +26,9 @@ router.post("/submit", protect, uploadFields, submitKYC);
 
 // Get user's KYC status
 router.get("/status", protect, getKYCStatus);
+
+// Update user's own KYC information
+router.put("/update", protect, updateKYC);
 
 // Get all KYC applications (admin only)
 router.get("/admin/applications", protect, adminAuth, getAllKYC);

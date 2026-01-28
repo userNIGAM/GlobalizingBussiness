@@ -40,4 +40,8 @@ export const checkConnection = (userId, connectedUserId) =>
   api.get("/connections/check/status", { params: { userId, connectedUserId } });
 export const removeConnection = (data) => api.delete("/connections", { data });
 
+// KYC endpoints
+export const getKYCStatus = () => api.get("/kyc/status");
+export const updateKYCStatus = (data) => api.put("/kyc/update", data);
+
 export default api;

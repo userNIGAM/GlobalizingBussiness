@@ -75,7 +75,7 @@ export async function submitKYC(req, res) {
     const userId = req.user.id;
 
     // Check if user already has a KYC submission
-    const existingKYC = await findOne({ user: userId });
+    const existingKYC = await KYC.findOne({ user: userId });
     if (existingKYC) {
       return res.status(400).json({
         success: false,
@@ -143,7 +143,7 @@ export async function submitKYC(req, res) {
     await kyc.save();
 
     // Update user's KYC status
-    await findByIdAndUpdate(userId, { kycStatus: "pending" });
+    await User.findByIdAndUpdate(userId, { kycStatus: "pending" });
 
     res.status(201).json({
       success: true,
@@ -164,7 +164,7 @@ export async function getKYCStatus(req, res) {
   try {
     const userId = req.user.id;
 
-    const kyc = await findOne({ user: userId })
+    const kyc = await KYC.findOne({ user: userId })
       .select("-__v")
       .populate("user", "name email");
 
@@ -234,7 +234,7 @@ export async function updateKYCStatus(req, res) {
       });
     }
 
-    const kyc = await findById(id).populate("user");
+    const kyc = await KYC.findById(id).populate("user");
 
     if (!kyc) {
       return res.status(404).json({
@@ -252,7 +252,7 @@ export async function updateKYCStatus(req, res) {
     await kyc.save();
 
     // Update user's KYC status
-    await findByIdAndUpdate(kyc.user._id, { kycStatus: status });
+    await User.findByIdAndUpdate(kyc.user._id, { kycStatus: status });
 
     res.json({
       success: true,
@@ -284,7 +284,7 @@ export async function getKYCDocument(req, res) {
       });
     }
 
-    const kyc = await findById(id);
+    const kyc = await KYC.findById(id);
 
     if (!kyc || !kyc[documentType]) {
       return res.status(404).json({
@@ -312,6 +312,52 @@ export async function getKYCDocument(req, res) {
     fileStream.pipe(res);
   } catch (error) {
     console.error("Get KYC document error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+}
+// Update user's own KYC information (non-admin)
+export async function updateKYC(req, res) {
+  try {
+    const userId = req.user.id;
+    const { phone, address, dob, idType, idNumber } = req.body;
+
+    // Find user's KYC record
+    const kyc = await KYC.findOne({ user: userId });
+
+    if (!kyc) {
+      return res.status(404).json({
+        success: false,
+        message: "No KYC record found. Please submit KYC first.",
+      });
+    }
+
+    // Only allow updates if status is pending or rejected
+    if (kyc.status === "approved") {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot update approved KYC records",
+      });
+    }
+
+    // Update allowed fields
+    if (phone) kyc.phone = phone;
+    if (address) kyc.address = address;
+    if (dob) kyc.dob = new Date(dob);
+    if (idType) kyc.idType = idType;
+    if (idNumber) kyc.idNumber = idNumber;
+
+    await kyc.save();
+
+    res.json({
+      success: true,
+      message: "KYC information updated successfully",
+      data: kyc,
+    });
+  } catch (error) {
+    console.error("Update KYC error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error",
