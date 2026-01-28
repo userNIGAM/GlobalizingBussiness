@@ -16,6 +16,7 @@ import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 import JobList from "./pages/Home/Jobs/JobList"
 import JobDetail from "./pages/Home/Jobs/JobDetail";
+import Networking from "./pages/Home/Network/Networking";
 
 
 
@@ -84,6 +85,8 @@ function App() {
             element={<JobList />}
           />
             <Route path="/job/:id" element={<JobDetail />} />
+            <Route path="/network" element={<Networking />} />
+
         </Routes>
       </Router>
     </div>
