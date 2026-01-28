@@ -1,53 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ConnectionCard from "./ConnectionCard";
 import { connections } from "./data";
+import { AuthContext } from "../../../context/AuthContext";
+import { getUserConnections, createConnection } from "../../../services/api";
 
 const Networking = () => {
   const [connectedPeople, setConnectedPeople] = useState([]);
-  const userId = "test_user_123";
+  const [loading, setLoading] = useState(false);
+  const { user } = useContext(AuthContext);
+  const userId = user?._id || "test_user_123";
 
-  // useEffect(() => {
-  //   fetch(`http://localhost:8000/api/connections/${userId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setConnectedPeople(data.map((c) => c.connectedUserId)))
-  //     .catch((err) => console.error("Error fetching connections:", err));
-  // }, []);
+  // Fetch existing connections on component mount
+  useEffect(() => {
+    const fetchConnections = async () => {
+      try {
+        const response = await getUserConnections(userId);
+
+        if (response.data.success && response.data.connections) {
+          const connectedIds = response.data.connections.map((c) => c._id);
+          setConnectedPeople(connectedIds);
+        }
+      } catch (err) {
+        console.error("Error fetching connections:", err);
+      }
+    };
+
+    if (userId && userId !== "test_user_123") {
+      fetchConnections();
+    }
+  }, [userId]);
 
   const handleConnect = async (id) => {
     if (connectedPeople.includes(id)) return; // already connected
 
     const payload = { userId, connectedUserId: id };
-    console.log("Sending payload to backend:", payload);
+    setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/api/connections", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await createConnection(payload);
 
-      const data = await res.json();
-
-      if (res.ok) {
+      if (response.data.success) {
         setConnectedPeople((prev) => [...prev, id]);
+        console.log("Connected successfully to user:", id);
       } else {
-        alert(data.message || "Failed to connect");
+        console.error(response.data.message || "Failed to connect");
       }
     } catch (error) {
-      console.error("Error connecting:", error);
+      console.error("Error connecting:", error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {connections.map((conn) => (
-        <ConnectionCard
-          key={conn.id}
-          {...conn}
-          onConnect={() => handleConnect(conn.id)}
-          isConnected={connectedPeople.includes(conn.id)}
-        />
-      ))}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {loading && (
+        <div className="text-center mb-4 text-gray-600">
+          Connecting...
+        </div>
+      )}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {connections.map((conn) => (
+          <ConnectionCard
+            key={conn.id}
+            {...conn}
+            onConnect={() => handleConnect(conn.id)}
+            isConnected={connectedPeople.includes(conn.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -33,4 +33,11 @@ export const resetPassword = (data) => api.post("/auth/reset-password", data);
 export const getCurrentUser = () => api.get("/auth/me");
 export const logoutUser = () => api.post("/auth/logout");
 
+// Connection endpoints
+export const createConnection = (data) => api.post("/connections", data);
+export const getUserConnections = (userId) => api.get(`/connections/${userId}`);
+export const checkConnection = (userId, connectedUserId) => 
+  api.get("/connections/check/status", { params: { userId, connectedUserId } });
+export const removeConnection = (data) => api.delete("/connections", { data });
+
 export default api;
