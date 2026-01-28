@@ -51,6 +51,7 @@ import authRoutes from "./routes/authRoutes.js";
 import { ConnectDB } from "./config/db.js";
 import kycRoutes from "./routes/kyc.js";
 import userRoutes from "./routes/user.js";
+import connectionRoutes from "./routes/connections.js";
 
 import { fileURLToPath } from "url";
 
@@ -104,6 +105,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/kyc", kycRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/connections", connectionRoutes);
 // MongoDB connect
 ConnectDB();
 
