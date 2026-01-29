@@ -46,6 +46,71 @@ const userSchema = new mongoose.Schema(
     // For password reset OTP
     resetPasswordOTP: String,
     resetPasswordOTPExpires: Date,
+    // Profile details
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
+    location: {
+      type: String,
+      trim: true,
+    },
+    jobTitle: {
+      type: String,
+      trim: true,
+    },
+    bio: {
+      type: String,
+      maxlength: 500,
+    },
+    profilePicture: {
+      type: String,
+      default: null,
+    },
+    skills: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    experience: [
+      {
+        position: {
+          type: String,
+          required: true,
+        },
+        company: {
+          type: String,
+          required: true,
+        },
+        description: String,
+        startDate: Date,
+        endDate: Date,
+        isCurrent: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    education: [
+      {
+        degree: {
+          type: String,
+          required: true,
+        },
+        school: {
+          type: String,
+          required: true,
+        },
+        field: String,
+        startDate: Date,
+        endDate: Date,
+        isCurrent: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -34,6 +34,10 @@ export const getCurrentUser = () => api.get("/auth/me");
 export const updateUserProfile = (data) => api.put("/auth/update-profile", data);
 export const logoutUser = () => api.post("/auth/logout");
 
+// User Profile endpoints
+export const getUserFullProfile = () => api.get("/user/profile");
+export const saveUserProfile = (data) => api.put("/user/profile", data);
+
 // Connection endpoints
 export const createConnection = (data) => api.post("/connections", data);
 export const getUserConnections = (userId) => api.get(`/connections/${userId}`);
