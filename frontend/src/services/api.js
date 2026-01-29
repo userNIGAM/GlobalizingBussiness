@@ -31,6 +31,7 @@ export const resendVerification = (data) => api.post("/auth/resend-verification"
 export const forgotPassword = (data) => api.post("/auth/forgot-password", data);
 export const resetPassword = (data) => api.post("/auth/reset-password", data);
 export const getCurrentUser = () => api.get("/auth/me");
+export const updateUserProfile = (data) => api.put("/auth/update-profile", data);
 export const logoutUser = () => api.post("/auth/logout");
 
 // Connection endpoints

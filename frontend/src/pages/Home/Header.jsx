@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Search, PlusCircle, Bell, HelpCircle, User } from "lucide-react";
-import ProfileModal from "./Profile/ProfileModal";
+import ProfileModal from "./Profile/ProfileModel";
 
 export default function Header({ onCreatePost }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);

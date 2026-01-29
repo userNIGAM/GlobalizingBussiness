@@ -350,3 +350,62 @@ export const logout = async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const {
+      phone,
+      location,
+      experience,
+      bio,
+      skills,
+      imageUrl,
+      address,
+      dob,
+      idType,
+      idNumber
+    } = req.body;
+
+    // Find user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update allowed fields (excluding name and email)
+    const updateFields = {};
+    
+    if (phone !== undefined) updateFields.phone = phone;
+    if (location !== undefined) updateFields.location = location;
+    if (experience !== undefined) updateFields.experience = experience;
+    if (bio !== undefined) updateFields.bio = bio;
+    if (skills !== undefined) updateFields.skills = skills;
+    if (imageUrl !== undefined) updateFields.imageUrl = imageUrl;
+    
+    // Update KYC-related fields
+    if (address !== undefined) updateFields.address = address;
+    if (dob !== undefined) updateFields.dob = dob;
+    if (idType !== undefined) updateFields.idType = idType;
+    if (idNumber !== undefined) updateFields.idNumber = idNumber;
+
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    ).select('-password -refreshToken');
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || "Failed to update profile" 
+    });
+  }
+};

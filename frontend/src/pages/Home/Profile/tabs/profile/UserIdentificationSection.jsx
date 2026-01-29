@@ -1,25 +1,51 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, IdCard } from "lucide-react";
-import { containerVariants, itemVariants } from "./animations";
+import { FileText, MapPin, Calendar, Hash, AlertCircle } from "lucide-react";
+import { itemVariants } from "./animations";
 
-const Field = ({ label, value, editing, error, onChange, type = "text", placeholder, disabled = false }) => (
+const Field = ({ 
+  label, 
+  icon: Icon, 
+  value, 
+  editing, 
+  error, 
+  onChange, 
+  type = "text", 
+  placeholder,
+  options
+}) => (
   <motion.div variants={itemVariants}>
     <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label}
+      <div className="flex items-center gap-2">
+        <Icon className="w-5 h-5 text-purple-500" />
+        {label}
+      </div>
     </label>
 
-    {editing && !disabled ? (
+    {editing ? (
       <>
-        <input
-          type={type}
-          value={value || ""}
-          onChange={e => onChange(e.target.value)}
-          placeholder={placeholder}
-          disabled={disabled}
-          className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 disabled:opacity-60 disabled:cursor-not-allowed"
-        />
+        {type === "select" ? (
+          <select
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
+            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-purple-500 focus:ring-purple-200"
+          >
+            <option value="">Select ID Type</option>
+            {options?.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type={type}
+            value={value || ""}
+            onChange={e => onChange(e.target.value)}
+            placeholder={placeholder}
+            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:border-purple-500 focus:ring-purple-200"
+          />
+        )}
         {error && (
           <div className="flex items-center gap-2 text-red-500 text-sm mt-2">
             <AlertCircle className="w-4 h-4" />
@@ -29,7 +55,12 @@ const Field = ({ label, value, editing, error, onChange, type = "text", placehol
       </>
     ) : (
       <div className="px-4 py-3 bg-gray-50 rounded-xl text-gray-900">
-        {value || placeholder}
+        {type === "select" ? (
+          options?.find(opt => opt.value === value)?.label || 
+          <span className="text-gray-400">Not provided</span>
+        ) : (
+          value || <span className="text-gray-400">{placeholder}</span>
+        )}
       </div>
     )}
   </motion.div>
@@ -40,115 +71,65 @@ const UserIdentificationSection = ({
   localProfile, 
   errors, 
   isEditing, 
-  onChange,
-  userIdentification 
+  onChange 
 }) => {
-  const displayProfile = isEditing ? localProfile : (userIdentification || profile);
+  const idTypeOptions = [
+    { value: "passport", label: "Passport" },
+    { value: "driver_license", label: "Driver's License" },
+    { value: "national_id", label: "National ID" }
+  ];
 
   return (
-    <motion.div
-      variants={containerVariants}
-      className="mb-8"
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <IdCard className="w-6 h-6 text-blue-600" />
-        <h3 className="text-xl font-semibold text-gray-900">User Identification</h3>
+    <motion.div variants={itemVariants} className="mb-8">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">
+          Identification Details
+        </h3>
+        <div className="text-sm text-gray-500">
+          KYC Verification
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-200">
-        {/* Full Name - Read Only */}
-        <Field
-          label="Full Name"
-          value={displayProfile?.fullName || ""}
-          editing={false}
-          disabled={true}
-          placeholder="Full Name"
-        />
-
-        {/* Email - Read Only */}
-        <Field
-          label="Email Address"
-          type="email"
-          value={displayProfile?.email || ""}
-          editing={false}
-          disabled={true}
-          placeholder="email@example.com"
-        />
-
-        {/* Phone - Editable */}
-        <Field
-          label="Phone Number"
-          value={displayProfile?.phone || ""}
-          editing={isEditing}
-          error={errors?.phone}
-          onChange={val => onChange("phone", val)}
-          placeholder="(555) 123-4567"
-          disabled={false}
-        />
-
-        {/* Address - Editable */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Field
           label="Address"
-          value={displayProfile?.address || ""}
+          icon={MapPin}
+          value={isEditing ? localProfile.address : profile.address}
           editing={isEditing}
-          error={errors?.address}
+          error={errors.address}
           onChange={val => onChange("address", val)}
-          placeholder="123 Main Street, City, Country"
-          disabled={false}
+          placeholder="123 Main St, Apt 4B"
         />
 
-        {/* Date of Birth - Editable */}
         <Field
           label="Date of Birth"
+          icon={Calendar}
           type="date"
-          value={displayProfile?.dob ? new Date(displayProfile.dob).toISOString().split('T')[0] : ""}
+          value={isEditing ? localProfile.dob : profile.dob}
           editing={isEditing}
-          error={errors?.dob}
+          error={errors.dob}
           onChange={val => onChange("dob", val)}
-          disabled={false}
         />
 
-        {/* ID Type - Editable */}
-        <motion.div variants={itemVariants}>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            ID Type
-          </label>
+        <Field
+          label="ID Type"
+          icon={FileText}
+          value={isEditing ? localProfile.idType : profile.idType}
+          editing={isEditing}
+          error={errors.idType}
+          onChange={val => onChange("idType", val)}
+          type="select"
+          options={idTypeOptions}
+        />
 
-          {isEditing ? (
-            <>
-              <select
-                value={displayProfile?.idType || ""}
-                onChange={e => onChange("idType", e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2"
-              >
-                <option value="">Select ID Type</option>
-                <option value="passport">Passport</option>
-                <option value="driver_license">Driver's License</option>
-                <option value="national_id">National ID</option>
-              </select>
-              {errors?.idType && (
-                <div className="flex items-center gap-2 text-red-500 text-sm mt-2">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.idType}
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="px-4 py-3 bg-gray-50 rounded-xl text-gray-900">
-              {displayProfile?.idType ? (displayProfile.idType.replace('_', ' ').toUpperCase()) : "N/A"}
-            </div>
-          )}
-        </motion.div>
-
-        {/* ID Number - Editable */}
         <Field
           label="ID Number"
-          value={displayProfile?.idNumber || ""}
+          icon={Hash}
+          value={isEditing ? localProfile.idNumber : profile.idNumber}
           editing={isEditing}
-          error={errors?.idNumber}
+          error={errors.idNumber}
           onChange={val => onChange("idNumber", val)}
-          placeholder="ABC123456789"
-          disabled={false}
+          placeholder="A12345678"
         />
       </div>
     </motion.div>

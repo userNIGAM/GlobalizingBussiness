@@ -7,6 +7,7 @@ import {
   forgotPassword,
   resetPassword,
   getCurrentUser,
+  updateUserProfile,
   logout,
 } from "../controllers/authController.js";
 import { protect } from "../middleware/auth.js";
@@ -22,5 +23,6 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword); // Changed to POST with body
 router.get("/me", protect, getCurrentUser);
 router.post("/logout", logout);
+router.put("/update-profile", protect, updateUserProfile);
 
 export default router;

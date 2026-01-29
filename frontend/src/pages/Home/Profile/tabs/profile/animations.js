@@ -1,20 +1,22 @@
+// animations.js
 export const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
+      staggerChildren: 0.1
     }
   }
 };
 
 export const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
-    y: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 100 }
+    y: 0,
+    transition: {
+      duration: 0.4
+    }
   }
 };
 
@@ -23,10 +25,18 @@ export const imageVariants = {
   visible: {
     scale: 1,
     opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 15 }
+    transition: {
+      type: "spring",
+      stiffness: 100
+    }
   },
-  hover: { scale: 1.05 },
-  tap: { scale: 0.95 }
+  hover: {
+    scale: 1.05,
+    transition: {
+      type: "spring",
+      stiffness: 300
+    }
+  }
 };
 
 export const loadingVariants = {
@@ -35,7 +45,7 @@ export const loadingVariants = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: "easeInOut"
-    }
-  }
+      ease: "easeInOut",
+    },
+  },
 };
