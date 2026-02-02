@@ -303,7 +303,7 @@ const JobList = () => {
                       </h2>
                       <button
                         onClick={(e) => toggleSaveJob(job.id, e)}
-                        className="ml-2 flex-shrink-0"
+                        className="ml-2 shrink-0"
                       >
                         <Bookmark className={`w-5 h-5 ${
                           savedJobs.includes(job.id.toString()) 
@@ -314,7 +314,7 @@ const JobList = () => {
                     </div>
                     
                     <div className="flex items-center text-gray-600 mb-3">
-                      <Building className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <Building className="w-4 h-4 mr-2 shrink-0" />
                       <span className="truncate">{job.company}</span>
                     </div>
                     
@@ -385,7 +385,7 @@ const JobList = () => {
               <div className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start gap-6">
                   {/* Company/Logo Area */}
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
                       <Building className="w-8 h-8 text-blue-600" />
                     </div>
@@ -411,7 +411,7 @@ const JobList = () => {
                       <div className="flex items-center space-x-3">
                         <button
                           onClick={(e) => toggleSaveJob(job.id, e)}
-                          className="flex-shrink-0"
+                          className="shrink-0"
                         >
                           <Bookmark className={`w-5 h-5 ${
                             savedJobs.includes(job.id.toString()) 

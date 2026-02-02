@@ -198,7 +198,7 @@ const JobDetail = () => {
           className="absolute inset-0 bg-cover bg-center transition-all duration-500"
           style={{ backgroundImage: `url(${jobImages[imageIndex]})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
         
         <button 
           onClick={handlePrevImage}
@@ -358,7 +358,7 @@ const JobDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {job.requirements.map((req, index) => (
                     <div key={index} className="flex items-start p-4 bg-gray-50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 shrink-0" />
                       <span className="text-gray-700">{req}</span>
                     </div>
                   ))}
@@ -391,7 +391,7 @@ const JobDetail = () => {
                   <div className="space-y-4">
                     {job.responsibilities.map((resp, index) => (
                       <div key={index} className="flex items-start">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4 flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4 shrink-0">
                           <span className="text-blue-600 font-semibold">{index + 1}</span>
                         </div>
                         <div className="flex-1">
