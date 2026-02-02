@@ -61,18 +61,27 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log("Attempting login with email:", email);
       const res = await api.post("/auth/login", { email, password });
+      console.log("Login response:", res);
       if (res?.data?.success) {
         // backend should set the cookie; we update local user state from response
         setUser(res.data.user);
         return { success: true, user: res.data.user };
       } else {
+        console.warn("Login response not successful:", res?.data);
         return {
           success: false,
           message: res?.data?.message || "Login failed",
         };
       }
     } catch (err) {
+      console.error("Login error details:", {
+        message: err?.message,
+        response: err?.response?.data,
+        status: err?.response?.status,
+        config: err?.config,
+      });
       const msg = err?.response?.data?.message || "Login failed";
       return { success: false, message: msg };
     }

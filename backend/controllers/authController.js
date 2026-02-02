@@ -149,27 +149,45 @@ export const verifyEmail = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("=== LOGIN ATTEMPT ===");
+    console.log("Email:", email);
+    console.log("Password received:", password ? "Yes" : "No");
+    
     if (!email || !password) {
+      console.log("Missing email or password");
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
     }
     console.log("Login attempt:", email, password);
     const user = await User.findOne({ email }).select("+password");
-    if (!user)
+    console.log("User found:", user ? "Yes" : "No");
+    
+    if (!user) {
+      console.log("User not found for email:", email);
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
+    }
+    
     // Use the comparePassword method from the User model
     const isMatch = await user.comparePassword(password);
-    if (!isMatch)
+    console.log("Password match:", isMatch);
+    
+    if (!isMatch) {
+      console.log("Password mismatch for user:", email);
       return res
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
+    }
+    
     // Create JWT token regardless of verification status
     const token = signJWT({ id: user._id, role: user.role });
+    console.log("JWT token created successfully");
     setAuthCookie(res, token);
     const { password: _p, ...userWithoutPassword } = user.toObject();
+    console.log("Login successful for user:", email);
+    
     return res.status(200).json({
       success: true,
       message: "Login successful",
