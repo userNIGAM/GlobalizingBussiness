@@ -17,7 +17,7 @@ import ResetPassword from "./components/Auth/ResetPassword";
 import JobList from "./pages/Home/Jobs/JobList"
 import JobDetail from "./pages/Home/Jobs/JobDetail";
 import Networking from "./pages/Home/Network/Networking";
-import JobProviderPortal from "./pages/JobProviderPortal";
+import JobProviderPortal from "./jobProviderPortal/JobProviderPortal";
 
 
 

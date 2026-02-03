@@ -37,7 +37,7 @@ export default function ProfileTabContent({ activeTab, profile, setProfile }) {
     };
 
     fetchProfile();
-  }, []);
+  }, [setProfile]);
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +70,8 @@ export default function ProfileTabContent({ activeTab, profile, setProfile }) {
       const response = await saveUserProfile(editedProfile);
       if (response.data.success) {
         setProfile(editedProfile);
+        // Update editedProfile to reflect the saved changes in the UI
+        setEditedProfile(editedProfile);
         setIsEditing(false);
         setSuccessMessage("Profile updated successfully!");
         setTimeout(() => setSuccessMessage(null), 3000);
@@ -243,7 +245,7 @@ export default function ProfileTabContent({ activeTab, profile, setProfile }) {
                 name="phone"
                 value={editedProfile.phone}
                 onChange={handleProfileChange}
-                placeholder="+1 (555) 000-0000"
+                placeholder="+977 9876543210"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               />
             ) : (

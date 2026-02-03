@@ -3,7 +3,7 @@ import { AlertCircle, Clock } from 'lucide-react';
 
 export default function Feed() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+    <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-purple-50 to-blue-50">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4 text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-purple-100 rounded-full p-4">
@@ -15,7 +15,7 @@ export default function Feed() {
           The Feed feature is currently in development. We're working hard to bring you an amazing experience!
         </p>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
-          <AlertCircle size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
+          <AlertCircle size={20} className="text-blue-600 shrink-0 mt-0.5" />
           <p className="text-sm text-blue-700">
             Check back soon for updates on new features and improvements.
           </p>
