@@ -100,7 +100,12 @@ const Login = () => {
       const result = await login(formData.email, formData.password);
       
       if (result.success) {
-        navigate('/home');
+        // Redirect based on user type
+        if (result.user.userType === 'jobProvider') {
+          navigate('/jobportal');
+        } else {
+          navigate('/home');
+        }
       } else {
         setErrors({ general: result.message || 'Login failed. Please try again.' });
       }

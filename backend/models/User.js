@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    userType: {
+      type: String,
+      enum: ["jobSeeker", "jobProvider"],
+      required: [true, "User type is required"],
+    },
     kycStatus: {
       type: String,
       enum: ["not_submitted", "pending", "approved", "rejected"],

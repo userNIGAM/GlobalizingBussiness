@@ -26,12 +26,18 @@ const setAuthCookie = (res, token) => {
 /* ------------------- REGISTER ------------------- */
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, userType } = req.body;
+    if (!name || !email || !password || !userType) {
       console.log("Missing fields");
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
+    }
+
+    if (!["jobSeeker", "jobProvider"].includes(userType)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid user type" });
     }
 
     const existing = await User.findOne({ email });
@@ -45,6 +51,7 @@ export const register = async (req, res) => {
       name,
       email,
       password,
+      userType,
       isVerified: false,
     });
 
@@ -182,7 +189,7 @@ export const login = async (req, res) => {
     }
     
     // Create JWT token regardless of verification status
-    const token = signJWT({ id: user._id, role: user.role });
+    const token = signJWT({ id: user._id, role: user.role, userType: user.userType });
     console.log("JWT token created successfully");
     setAuthCookie(res, token);
     const { password: _p, ...userWithoutPassword } = user.toObject();

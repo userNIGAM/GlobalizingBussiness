@@ -41,9 +41,9 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, [checkAuth]);
 
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, userType) => {
     try {
-      const res = await api.post("/auth/register", { name, email, password });
+      const res = await api.post("/auth/register", { name, email, password, userType });
       if (res?.data?.success) {
         setUser(res.data.user);
         return { success: true, user: res.data.user };

@@ -17,6 +17,7 @@ import ResetPassword from "./components/Auth/ResetPassword";
 import JobList from "./pages/Home/Jobs/JobList"
 import JobDetail from "./pages/Home/Jobs/JobDetail";
 import Networking from "./pages/Home/Network/Networking";
+import JobProviderPortal from "./pages/JobProviderPortal";
 
 
 
@@ -24,6 +25,17 @@ import Networking from "./pages/Home/Network/Networking";
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
+// Role-based Protected Route Component
+const RoleBasedRoute = ({ user, userType, children }) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  if (user.userType !== userType) {
+    return <Navigate to={user.userType === 'jobProvider' ? '/jobportal' : '/home'} replace />;
   }
   return children;
 };
@@ -48,23 +60,44 @@ function App() {
       {/* All content is now route-based */}
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to={user ? "/home" : "/login"} replace />} />
+          <Route 
+            path="/" 
+            element={
+              <Navigate 
+                to={
+                  user 
+                    ? user.userType === 'jobProvider' 
+                      ? '/jobportal' 
+                      : '/home'
+                    : '/login'
+                } 
+                replace 
+              />
+            } 
+          />
           <Route
             path="/home"
             element={
-              <ProtectedRoute user={user}>
+              <RoleBasedRoute user={user} userType="jobSeeker">
                 <Home />
-              </ProtectedRoute>
-              // <Home />
+              </RoleBasedRoute>
+            }
+          />
+          <Route
+            path="/jobportal"
+            element={
+              <RoleBasedRoute user={user} userType="jobProvider">
+                <JobProviderPortal />
+              </RoleBasedRoute>
             }
           />
           <Route
             path="/login"
-            element={user ? <Navigate to="/home" replace /> : <Login />}
+            element={user ? <Navigate to={user.userType === 'jobProvider' ? '/jobportal' : '/home'} replace /> : <Login />}
           />
           <Route
             path="/signup"
-            element={user ? <Navigate to="/home" replace /> : <Signup />}
+            element={user ? <Navigate to={user.userType === 'jobProvider' ? '/jobportal' : '/home'} replace /> : <Signup />}
           />
           <Route
             path="/otp"
@@ -79,13 +112,31 @@ function App() {
             element={<ResetPassword />}
           />
 
-          {/* sidebar navigation routes */}
+          {/* sidebar navigation routes - only for job seekers */}
            <Route
             path="/jobs"
-            element={<JobList />}
+            element={
+              <RoleBasedRoute user={user} userType="jobSeeker">
+                <JobList />
+              </RoleBasedRoute>
+            }
           />
-            <Route path="/job/:id" element={<JobDetail />} />
-            <Route path="/network" element={<Networking />} />
+            <Route 
+              path="/job/:id" 
+              element={
+                <RoleBasedRoute user={user} userType="jobSeeker">
+                  <JobDetail />
+                </RoleBasedRoute>
+              } 
+            />
+            <Route 
+              path="/network" 
+              element={
+                <RoleBasedRoute user={user} userType="jobSeeker">
+                  <Networking />
+                </RoleBasedRoute>
+              } 
+            />
 
         </Routes>
       </Router>
