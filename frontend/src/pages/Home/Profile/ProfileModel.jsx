@@ -26,6 +26,7 @@ export default function ProfileModal({ open, onOpenChange }) {
     { id: "experience", label: "Experience" },
     { id: "skills", label: "Skills" },
     { id: "education", label: "Education" },
+    { id: "Logout", label: "Logout" },
   ];
 
   return (

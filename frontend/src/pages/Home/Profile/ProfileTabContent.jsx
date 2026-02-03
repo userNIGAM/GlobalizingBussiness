@@ -6,6 +6,7 @@ import { getUserFullProfile, saveUserProfile } from "../../../services/api.js";
 import ExperienceSection from "./tabs/profile/ExperienceSection.jsx";
 import EducationSection from "./tabs/profile/EducationSection.jsx";
 import SkillsSection from "./tabs/profile/SkillsSection.jsx";
+import Logout from "./tabs/profile/Logout.jsx";
 
 export default function ProfileTabContent({ activeTab, profile, setProfile }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -117,9 +118,9 @@ export default function ProfileTabContent({ activeTab, profile, setProfile }) {
         )}
         {/* Profile Header Section */}
         <div className="flex gap-8 pb-8 border-b border-gray-200">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <div className="relative">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+              <div className="w-24 h-24 rounded-full bg-linear-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
                 {editedProfile.profileImage ? (
                   <img
                     src={editedProfile.profileImage}
@@ -404,4 +405,7 @@ export default function ProfileTabContent({ activeTab, profile, setProfile }) {
       </div>
     );
   }
+    if(activeTab === "Logout") {
+    return <Logout />;
+     }
 }

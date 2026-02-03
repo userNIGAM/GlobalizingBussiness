@@ -1,14 +1,9 @@
 /* eslint-disable no-unused-vars */
 
-import { User, Settings, Shield, Eye, Database, Bell, LogOut } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 
 const tabs = [
   { id: "profile", label: "Profile", icon: User },
-  { id: "account", label: "Account Preferences", icon: Settings },
-  { id: "security", label: "Sign-in & Security", icon: Shield },
-  { id: "visibility", label: "Visibility", icon: Eye },
-  { id: "privacy", label: "Data Privacy", icon: Database },
-  { id: "notifications", label: "Notifications", icon: Bell },
   { id: "Logout", label: "Logout", icon: LogOut },
 ];
 

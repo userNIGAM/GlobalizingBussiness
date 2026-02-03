@@ -1,21 +1,11 @@
 /* eslint-disable no-unused-vars */
 
 import { motion, AnimatePresence } from "framer-motion";
-import ProfileTab from "./tabs/ProfileTab";
-import AccountTab from "./tabs/AccountTab";
-import SecurityTab from "./tabs/SecurityTab";
-import VisibilityTab from "./tabs/VisibilityTab";
-import PrivacyTab from "./tabs/PrivacyTab";
-import NotificationsTab from "./tabs/NotificationsTab";
-import Logout from "./tabs/Logout";
+import ProfileTabContent from "../ProfileTabContent";
+import Logout from "./tabs/profile/Logout";
 
 const tabMap = {
-  profile: ProfileTab,
-  account: AccountTab,
-  security: SecurityTab,
-  visibility: VisibilityTab,
-  privacy: PrivacyTab,
-  notifications: NotificationsTab,
+  profile: ProfileTabContent,
   Logout: Logout,
 };
 
