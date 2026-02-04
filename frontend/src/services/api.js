@@ -49,4 +49,15 @@ export const removeConnection = (data) => api.delete("/connections", { data });
 export const getKYCStatus = () => api.get("/kyc/status");
 export const updateKYCStatus = (data) => api.put("/kyc/update", data);
 
+// Job endpoints
+export const postJob = (data) => api.post("/jobs", data);
+export const getProviderJobs = () => api.get("/jobs/provider/jobs");
+export const getJobDetails = (jobId) => api.get(`/jobs/${jobId}`);
+export const updateJobStatus = (jobId, data) => api.put(`/jobs/${jobId}/status`, data);
+export const deleteJob = (jobId) => api.delete(`/jobs/${jobId}`);
+export const getJobApplications = (jobId) => api.get(`/jobs/${jobId}/applications`);
+export const updateApplicationStatus = (applicationId, data) => api.put(`/jobs/application/${applicationId}`, data);
+export const saveJob = (data) => api.post("/jobs/save", data);
+export const getSavedJobs = () => api.get("/jobs/saved/jobs");
+
 export default api;
