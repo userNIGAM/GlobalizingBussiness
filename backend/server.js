@@ -1,45 +1,3 @@
-// import "dotenv/config";
-// import express from "express";
-// import cookieParser from "cookie-parser";
-// import cors from "cors";
-// import morgan from "morgan";
-// import { connectDB } from "./config/db.js";
-// import authRoutes from "./routes/auth.js";
-
-// const app = express();
-
-// const ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
-
-// app.use(
-//   cors({
-//     origin: ORIGIN,
-//     credentials: true,
-//   })
-// );
-
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(morgan("dev"));
-
-// app.get("/api/health", (_req, res) => {
-//   res.json({ ok: true, timestamp: new Date().toISOString() });
-// });
-
-// app.use("/api/auth", authRoutes);
-
-// const PORT = process.env.PORT || 5000;
-
-// connectDB()
-//   .then(() => {
-//     app.listen(PORT, () => {
-//       console.log(`Server running on http://localhost:${PORT}`);
-//     });
-//   })
-//   .catch((err) => {
-//     console.error("DB connection error:", err);
-//     process.exit(1);
-//   });
-
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -52,6 +10,7 @@ import { ConnectDB } from "./config/db.js";
 import kycRoutes from "./routes/kyc.js";
 import userRoutes from "./routes/user.js";
 import connectionRoutes from "./routes/connections.js";
+import jobRoutes from "./routes/jobRoutes.js";
 
 import { fileURLToPath } from "url";
 
@@ -106,6 +65,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/kyc", kycRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/connections", connectionRoutes);
+app.use("/api/jobs", jobRoutes);
 
 //Global error handler
 app.use((err, req, res, next) => {
